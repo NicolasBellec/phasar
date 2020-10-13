@@ -50,7 +50,7 @@ public:
   InterMonoMemReachDef(const ProjectIRDB *IRDB,
                       const LLVMTypeHierarchy *TH,
                       const LLVMBasedICFG *ICF,
-                      const LLVMPointsToInfo *PT,
+                      LLVMPointsToInfo *PT,
                       std::set<std::string> EntryPoints = {});
 
   ~InterMonoMemReachDef() override = default;
@@ -90,14 +90,14 @@ namespace std {
 template <>
 struct hash<std::pair<
     const llvm::Value *,
-    psr::LatticeDomain<int64_t>> {
+    psr::LatticeDomain<psr::InterMonoMemReachDef::plain_d_t>>> {
   size_t operator()(const std::pair<const llvm::Value *,
-                    sr::LatticeDomain<int64_t>> &P) const {
+                    psr::LatticeDomain<int64_t> > &P) const {
     std::hash<const llvm::Value *> hash_ptr;
-    std::hash<sr::LatticeDomain<int64_t>> hash_value;
+    std::hash<int64_t> hash_unsigned;
     size_t hp = hash_ptr(P.first);
     size_t hu = 0;
-
+    // returns nullptr if P.second is Top or Bottom, a valid pointer otherwise
     if (const auto *Ptr =
             std::get_if<psr::InterMonoMemReachDef::plain_d_t>(
                 &P.second)) {

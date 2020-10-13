@@ -47,7 +47,7 @@ class IntraMonoSolverTest
     : public IntraMonoProblem<IntraMonoSolverTestAnalysisDomain> {
 public:
   IntraMonoSolverTest(const ProjectIRDB *IRDB, const LLVMTypeHierarchy *TH,
-                      const LLVMBasedCFG *CF, const LLVMPointsToInfo *PT,
+                      const LLVMBasedCFG *CF, LLVMPointsToInfo *PT,
                       std::set<std::string> EntryPoints = {});
   ~IntraMonoSolverTest() override = default;
 

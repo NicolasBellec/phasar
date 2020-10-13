@@ -32,7 +32,7 @@ namespace psr {
 
 InterMonoMemReachDef::InterMonoMemReachDef(
     const ProjectIRDB *IRDB, const LLVMTypeHierarchy *TH,
-    const LLVMBasedICFG *ICF, const LLVMPointsToInfo *PT,
+    const LLVMBasedICFG *ICF, LLVMPointsToInfo *PT,
     std::set<std::string> EntryPoints)
     : InterMonoProblem<InterMonoMemReachDefAnalysisDomain>(
           IRDB, TH, ICF, PT, std::move(EntryPoints)) {}
@@ -66,6 +66,7 @@ InterMonoMemReachDef::initialSeeds() {
   //   }
   // }
   // return Seeds;
+  return {};
 }
 
 BitVectorSet<InterMonoMemReachDef::d_t>
@@ -73,14 +74,28 @@ InterMonoMemReachDef::normalFlow(
     InterMonoMemReachDef::n_t S,
     const BitVectorSet<InterMonoMemReachDef::d_t> &In) {
   // TODO finish implementation
-  auto Out = In;
+  BitVectorSet<InterMonoMemReachDef::d_t> Out;
   // if (const auto *Alloc = llvm::dyn_cast<llvm::AllocaInst>(S)) {
   //     Out.insert({Alloc, Top{}});
   // }
   if (const auto *Store = llvm::dyn_cast<llvm::StoreInst>(S)) {
-    auto *target = Store->getPointerOperand();
+    // llvm::Value *target = Store->getPointerOperand();
 
-    
+
+    // for ( const auto *point_to : *(PT->getPointsToSet(Store)) ) {
+    //   for ( const auto pair : In ) {
+    //     if ( pair.first == point_to && PT->alias(pair.first, point_to) == AliasResult::MustAlias ) {
+    //       cout << "Killing ( " << llvmIRToString(pair.first) << ", " << pair.second << " )\n";
+    //     } else {
+    //       cout << "Keeping ( " << llvmIRToString(pair.first) << ", " << pair.second << " )\n";
+    //       Out.insert(std::pair(pair));
+    //     }
+    //   }
+    //
+    //   int64_t id = 0;
+    //   cout << "Generating ( " << llvmIRToString(point_to) << ", " << id << " )\n";
+    //   Out.insert(std::pair<const llvm::Value *, LatticeDomain<plain_d_t>>(point_to, id));
+    // }
   }
   return Out;
 }

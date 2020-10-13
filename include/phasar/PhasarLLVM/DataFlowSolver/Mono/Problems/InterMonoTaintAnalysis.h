@@ -49,7 +49,7 @@ public:
   using ConfigurationTy = TaintConfiguration<const llvm::Value *>;
 
   InterMonoTaintAnalysis(const ProjectIRDB *IRDB, const LLVMTypeHierarchy *TH,
-                         const LLVMBasedICFG *ICF, const LLVMPointsToInfo *PT,
+                         const LLVMBasedICFG *ICF, LLVMPointsToInfo *PT,
                          const TaintConfiguration<const llvm::Value *> &TSF,
                          std::set<std::string> EntryPoints = {});
   ~InterMonoTaintAnalysis() override = default;

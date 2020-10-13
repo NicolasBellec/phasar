@@ -47,7 +47,7 @@ protected:
 
 public:
   InterMonoProblem(const ProjectIRDB *IRDB, const TypeHierarchy<t_t, f_t> *TH,
-                   const i_t *ICF, const PointsToInfo<v_t, n_t> *PT,
+                   const i_t *ICF, PointsToInfo<v_t, n_t> *PT,
                    std::set<std::string> EntryPoints = {})
       : IntraMonoProblem<AnalysisDomainTy>(IRDB, TH, ICF, PT, EntryPoints),
         ICF(ICF) {}

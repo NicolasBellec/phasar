@@ -58,7 +58,7 @@ protected:
   const ProjectIRDB *IRDB;
   const TypeHierarchy<t_t, f_t> *TH;
   const c_t *CF;
-  const PointsToInfo<v_t, n_t> *PT;
+  PointsToInfo<v_t, n_t> *PT;
   std::set<std::string> EntryPoints;
   [[maybe_unused]] SoundnessFlag SF = SoundnessFlag::UNUSED;
 
@@ -68,7 +68,7 @@ public:
   using ConfigurationTy = HasNoConfigurationType;
 
   IntraMonoProblem(const ProjectIRDB *IRDB, const TypeHierarchy<t_t, f_t> *TH,
-                   const c_t *CF, const PointsToInfo<v_t, n_t> *PT,
+                   const c_t *CF, PointsToInfo<v_t, n_t> *PT,
                    std::set<std::string> EntryPoints = {})
       : IRDB(IRDB), TH(TH), CF(CF), PT(PT), EntryPoints(EntryPoints) {}
   ~IntraMonoProblem() override = default;

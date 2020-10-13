@@ -36,7 +36,7 @@ namespace psr {
 IntraMonoSolverTest::IntraMonoSolverTest(const ProjectIRDB *IRDB,
                                          const LLVMTypeHierarchy *TH,
                                          const LLVMBasedCFG *CF,
-                                         const LLVMPointsToInfo *PT,
+                                         LLVMPointsToInfo *PT,
                                          std::set<std::string> EntryPoints)
     : IntraMonoProblem<IntraMonoSolverTestAnalysisDomain>(
           IRDB, TH, CF, PT, std::move(EntryPoints)) {}
