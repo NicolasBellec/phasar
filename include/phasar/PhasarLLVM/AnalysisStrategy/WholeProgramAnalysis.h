@@ -33,7 +33,7 @@ class WholeProgramAnalysis {
   static_assert(std::is_base_of_v<psr::AnalysisSetup, Setup>,
                 "Setup is not a valid analysis setup!");
 
-private:
+protected:
   using TypeHierarchyTy = typename Setup::TypeHierarchyTy;
   using PointerAnalysisTy = typename Setup::PointerAnalysisTy;
   using CallGraphAnalysisTy = typename Setup::CallGraphAnalysisTy;
