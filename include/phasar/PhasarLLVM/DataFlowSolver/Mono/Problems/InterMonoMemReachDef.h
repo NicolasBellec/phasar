@@ -34,18 +34,19 @@ class ProjectIRDB;
 class LLVMTypeHierarchy;
 class LLVMPointsToInfo;
 
-struct InterMonoMemReachDefAnalysisDomain
+struct InterMonoMemReachDefDomain
     : public LLVMAnalysisDomainDefault {
-  using plain_d_t = int64_t;
-  using d_t = std::pair<const llvm::Value *, LatticeDomain<plain_d_t>>;
+  using plain_d_t = llvm::Metadata *;
+  using d_t = std::pair<const llvm::Value *, plain_d_t>;
   using i_t = LLVMBasedICFG;
 };
 
+
 class InterMonoMemReachDef
-    : public InterMonoProblem<InterMonoMemReachDefAnalysisDomain> {
+    : public InterMonoProblem<InterMonoMemReachDefDomain> {
 public:
   using plain_d_t =
-      typename InterMonoMemReachDefAnalysisDomain::plain_d_t;
+      typename InterMonoMemReachDefDomain::plain_d_t;
 
   InterMonoMemReachDef(const ProjectIRDB *IRDB,
                       const LLVMTypeHierarchy *TH,
@@ -86,27 +87,20 @@ public:
 } // namespace psr
 
 namespace std {
+  template <>
+  struct hash<std::pair<
+      const llvm::Value *,
+      llvm::Metadata *>> {
+    size_t operator()(const std::pair<const llvm::Value *,
+                                      llvm::Metadata *> &P) const {
+      std::hash<const llvm::Value *> hash_ptr;
+      std::hash<llvm::Metadata *> hash_metadata;
+      size_t hp = hash_ptr(P.first);
+      size_t hu = hash_metadata(P.second);
 
-template <>
-struct hash<std::pair<
-    const llvm::Value *,
-    psr::LatticeDomain<psr::InterMonoMemReachDef::plain_d_t>>> {
-  size_t operator()(const std::pair<const llvm::Value *,
-                    psr::LatticeDomain<int64_t> > &P) const {
-    std::hash<const llvm::Value *> hash_ptr;
-    std::hash<int64_t> hash_unsigned;
-    size_t hp = hash_ptr(P.first);
-    size_t hu = 0;
-    // returns nullptr if P.second is Top or Bottom, a valid pointer otherwise
-    if (const auto *Ptr =
-            std::get_if<psr::InterMonoMemReachDef::plain_d_t>(
-                &P.second)) {
-      hu = *Ptr;
+      return hp ^ (hu << 1);
     }
-    return hp ^ (hu << 1);
-  }
-};
-
-} // namespace std
+  };
+}
 
 #endif
