@@ -41,6 +41,7 @@
 #include "phasar/PhasarLLVM/DataFlowSolver/Mono/Problems/InterMonoSolverTest.h"
 #include "phasar/PhasarLLVM/DataFlowSolver/Mono/Problems/InterMonoTaintAnalysis.h"
 #include "phasar/PhasarLLVM/DataFlowSolver/Mono/Problems/IntraMonoFullConstantPropagation.h"
+#include "phasar/PhasarLLVM/DataFlowSolver/Mono/Problems/InterMonoMemReachDef.h"
 #include "phasar/PhasarLLVM/DataFlowSolver/Mono/Problems/IntraMonoSolverTest.h"
 #include "phasar/PhasarLLVM/DataFlowSolver/Mono/Solver/InterMonoSolver.h"
 #include "phasar/PhasarLLVM/DataFlowSolver/Mono/Solver/IntraMonoSolver.h"
@@ -255,8 +256,17 @@ void AnalysisController::executeWholeProgram() {
         emitRequestedDataFlowResults(WPA);
         WPA.releaseAllHelperAnalyses();
       } break;
-      default:
-        break;
+      case DataFlowAnalysisType::InterMonoMemReachDef: {
+        WholeProgramAnalysis<InterMonoSolver_P<InterMonoMemReachDef, 3>,
+                             InterMonoMemReachDef>
+            WPA(IRDB, EntryPoints, &PT, &ICF, &TH);
+        WPA.solve();
+        emitRequestedDataFlowResults(WPA);
+        WPA.releaseAllHelperAnalyses();
+      } break;
+      default: {
+        std::cerr << "Unsupported analysis type : " << DataFlowAnalysis << "\n";
+      } break;
       }
     } else if (std::holds_alternative<IFDSPluginConstructor>(
                    _DataFlowAnalysis)) {

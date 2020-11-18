@@ -226,7 +226,7 @@ public:
           // we need to use several call- and retsites if the context is empty
           std::set<n_t> callsites;
           std::set<n_t> retsites;
-          std::cout << "CTX: " << CTX << '\n';
+          // std::cout << "CTX: " << CTX << '\n';
           // handle empty context
           if (CTX.empty()) {
             callsites = ICF->getCallersOf(ICF->getFunctionOf(src));
@@ -234,7 +234,7 @@ public:
             // handle context containing at least one element
             callsites.insert(CTXRm.pop_back());
           }
-          std::cout << "CTXRm: " << CTXRm << std::endl;
+          // std::cout << "CTXRm: " << CTXRm << std::endl;
           // retrieve the possible return sites for each call
           for (auto callsite : callsites) {
             auto retsitesPerCall = ICF->getReturnSitesOfCallAt(callsite);
@@ -297,6 +297,8 @@ public:
             for (auto FlowFact : FlowFacts) {
               OS << this->IMProblem.DtoString(FlowFact);
             }
+
+            OS << "\n";
           }
         }
       }

@@ -11,6 +11,7 @@
 #define ANALYSIS_CONFIGURATIONS(STRATEGY, STRATEGY_TYPE, PROBLEM, PROBLEM_TYPE)
 #endif
 
+ANALYSIS_CONFIGURATIONS("InterMonoMemReachDef", "inter-mono-memreachdef", InterMonoMemReachDef)
 ANALYSIS_CONFIGURATIONS("IFDSUninitializedVariables", "ifds-uninit", IFDSUninitializedVariables)
 ANALYSIS_CONFIGURATIONS("IFDSConstAnalysis", "ifds-const", IFDSConstAnalysis)
 ANALYSIS_CONFIGURATIONS("IFDSTaintAnalysis", "ifds-taint", IFDSTaintAnalysis)
